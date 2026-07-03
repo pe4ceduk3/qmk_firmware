@@ -3,7 +3,7 @@ const __pageData = JSON.parse('{"title":"Tap Dance: A Single Key Can Do 3, 5, or
 const _sfc_main = { name: "features/tap_dance.md" };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", null, [..._cache[0] || (_cache[0] = [
-    createStaticVNode("", 66)
+    createStaticVNode("", 67)
   ])]);
 }
 const tap_dance = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
