@@ -1,4 +1,4 @@
-<!--- Copyright 2024 QMK --->
+<!--- Copyright 2026 QMK --->
 <!--- SPDX-License-Identifier: GPL-2.0-or-later --->
 
 <!---
@@ -78,7 +78,9 @@ Two token values are reserved: `0xFFFE` and `0xFFFF`:
 * `0xFFFE`: A message sent by a host application may use this token if no response is to be sent -- a "fire and forget" message.
 * `0xFFFF`: Signifies a "broadcast" message sent by the firmware without prompting from the host application. Broadcast messages are defined later in this document.
 
-Any request will generate at least one corresponding response, with the exception of messages using reserved tokens. Maximum total message length is 128 bytes due to RAM constraints.
+When not using reserved tokens above, requests will always generate one corresponding response with a matching token.
+
+Maximum total message length is 64 bytes - a single HID report size, no fragmentation or reassembly needed.
 
 Response messages will always be prefixed by the originating request _token_, directly followed by that request's _response flags_, then the response payload length:
 
@@ -133,7 +135,7 @@ This subsystem is always present, and provides the ability to address QMK-specif
 | Board Manufacturer | `0x01 0x03` |  | __Response:__ `string` | Retrieves the name of the manufacturer|
 | Product Name | `0x01 0x04` |  | __Response:__ `string` | Retrieves the product name|
 | Config Blob Length | `0x01 0x05` |  | __Response:__ `u16` | Retrieves the length of the configuration data bundled within the firmware|
-| Config Blob Chunk | `0x01 0x06` |  | __Request:__ `u16`<br><br>__Response:__ `u8[32]` | Retrieves a chunk of the configuration data bundled within the firmware|
+| Config Blob Chunk | `0x01 0x06` |  | __Request:__<br>&nbsp;&nbsp;&nbsp;&nbsp;* offset: `u16`<br><br>__Response:__ `u8[32]` | Retrieves a chunk of the configuration data bundled within the firmware|
 | Jump to bootloader | `0x01 0x07` | __Secure__ | __Response:__ `u8` | Jump to bootloader<br><br>May not be present - if QMK capabilities query returns “true”, then jump to bootloader is supported<br><br>* 0 means secure routes are disabled, and should be considered as a failure<br>* 1 means successful, board will jump to bootloader|
 | Hardware Identifier | `0x01 0x08` |  | __Response:__ `u32[4]` | Retrieves a unique identifier for the board.|
 | Reinitialize EEPROM | `0x01 0x09` | __Secure__ | __Response:__ `u8` | Reinitializes the keyboard's EEPROM (persistent memory)<br><br>May not be present - if QMK capabilities query returns “true”, then reinitialize is supported<br><br>* 0 means secure routes are disabled, and should be considered as a failure<br>* 1 means successful, board will reinitialize and then reboot|
