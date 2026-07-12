@@ -299,7 +299,7 @@ enum usb_endpoints {
 
 #ifdef XAP_ENABLE
     XAP_IN_EPNUM = NEXT_EPNUM,
-#    if STM32_USB_USE_OTG1
+#    ifdef USB_ENDPOINTS_ARE_REORDERABLE
 #        define XAP_OUT_EPNUM XAP_IN_EPNUM
 #    else
     XAP_OUT_EPNUM = NEXT_EPNUM,
