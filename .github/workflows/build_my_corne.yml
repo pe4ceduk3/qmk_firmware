@@ -1,0 +1,25 @@
+name: Build Corne Firmware
+
+on:
+  workflow_dispatch: # Позволяет запускать сборку вручную кнопкой
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: qmkfm/qmk_cli
+    steps:
+      - name: Checkout content
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Build firmware
+        run: |
+          qmk compile -kb crkbd/rev4 -km my_layout
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: corne_firmware
+          path: ./*.uf2
+          
