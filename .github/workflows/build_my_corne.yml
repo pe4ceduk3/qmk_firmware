@@ -1,7 +1,7 @@
 name: Build Corne Firmware
 
 on:
-  workflow_dispatch: # Позволяет запускать сборку вручную кнопкой
+  workflow_dispatch:
 
 jobs:
   build:
@@ -15,11 +15,10 @@ jobs:
 
       - name: Build firmware
         run: |
-          qmk compile -kb crkbd/rev4 -km my_layout
+          qmk compile -kb crkbd/rev4 -km fff
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: corne_firmware
           path: ./*.uf2
-          
