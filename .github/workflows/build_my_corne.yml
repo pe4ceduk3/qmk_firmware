@@ -13,14 +13,9 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Find correct keyboard name
-        run: |
-          echo "=== Ищем точное имя клавиатуры в QMK ==="
-          qmk list-keyboards | grep crkbd
-
       - name: Build firmware
         run: |
-          qmk compile -kb crkbd/rev4 -km fff
+          qmk compile -kb crkbd/rev4_1/standard -km fff
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
