@@ -13,6 +13,19 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Force copy keymap to correct directory
+        run: |
+          # Ищем, где реально лежит папка fff, и копируем её в правильное место для сборки
+          REAL_PATH=$(find . -type d -name "fff" | head -n 1)
+          if [ -n "$REAL_PATH" ]; then
+            echo "Нашли папку по пути: $REAL_PATH. Копируем в целевую директорию QMK..."
+            mkdir -p keyboards/crkbd/rev4_1/standard/keymaps/fff
+            cp -rf $REAL_PATH/* keyboards/crkbd/rev4_1/standard/keymaps/fff/
+          else
+            echo "Ошибка: папка fff вообще не найдена в репозитории!"
+            exit 1
+          fi
+
       - name: Build firmware
         run: |
           qmk compile -kb crkbd/rev4_1/standard -km fff
